@@ -1,6 +1,7 @@
 angular.module('hex7.gameBoard',[
 	"ngRoute",
-	"cfp.hotkeys"
+	"cfp.hotkeys",
+	"hex7.game.rulesService"
 ])
 .config(function ($routeProvider,$locationProvider){
     $routeProvider.when("/gameboard/:level/:size",{
@@ -19,13 +20,17 @@ angular.module('hex7.gameBoard',[
 		alreadyTested:false
 	}
 })
-.controller('gameBoardCtrl', function($scope, $routeParams, $sce, elementsConstants, hotkeys){
+.controller('gameBoardCtrl', function($scope, $routeParams, $sce, elementsConstants, hotkeys, rulesService){
+	//Global variables
 	$scope.level = $routeParams.level;
 	$scope.size = $routeParams.size;
+
+	//Game variables
 	$scope.boardCases = [];
 	$scope.selectedCase = {x:0,y:0};
 	$scope.turn = true;//true <=> player1, false <=> player2
 	$scope.winner = '';
+	
 
 	//Initialisation of the game board
 	$scope.initBoard = function(){
@@ -69,7 +74,7 @@ angular.module('hex7.gameBoard',[
 			_.forEach(player1TopPieces, function(topPiece){
 				var path = [];
 				path.push(topPiece);
-				var endOfSearch = true;
+				var endOfSearch = false;
 				while(!endOfSearch){
 					var newPathFound = false;
 					if(_.where(piecesWithoutTopBorderPieces, {'x':_.last(path).x+1, 'y':_.last(path).y, 'alreadyTested':false}).length>0){
@@ -107,7 +112,7 @@ angular.module('hex7.gameBoard',[
 					if(path.length === 0){
 						endOfSearch = true;
 					}else{
-						if(_.where(_.last(path), {'y':$scope.size-1}).length>0){
+						if(_.where(path, {'y':$scope.size-1}).length>0){
 							console.log('SOLUTION!!!');
 							solutionFound = true;
 							endOfSearch = true;
@@ -126,6 +131,7 @@ angular.module('hex7.gameBoard',[
 					}
 				}
 			});
+			$scope.cleanPieceAlreadyTested($scope.boardCases);
 			if(solutionFound){
 				console.log('Player 1 win !');
 			}
@@ -136,6 +142,12 @@ angular.module('hex7.gameBoard',[
 		if(player2LeftPieces.length > 0 && player2RightPieces.length > 0){
 			console.log('One solution could be found for the player 2');
 		}*/
+	};
+
+	$scope.cleanPieceAlreadyTested = function(boardCases){
+		_.forEach(boardCases, function(c){
+			c.alreadyTested = false;
+		});
 	};
 
 	hotkeys.add({
@@ -188,7 +200,7 @@ angular.module('hex7.gameBoard',[
 		callback: function(event) {
 			if(_.first(_.where($scope.boardCases, {'x':$scope.selectedCase.x, 'y':$scope.selectedCase.y})).state === 'default'){
 				_.first(_.where($scope.boardCases, {'x':$scope.selectedCase.x, 'y':$scope.selectedCase.y})).state = $scope.turn ? 'player1' : 'player2';
-				$scope.turn = !$scope.turn;
+				//$scope.turn = !$scope.turn;
 				$scope.checkEnd();
 				event.preventDefault();
 			}
