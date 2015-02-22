@@ -9,7 +9,7 @@
 
 	<div class="boardBorder">
 		<div class="relative">
-			<div ng-repeat="case in boardCases" style="position:absolute;top:{{case.posy}}px;left:{{case.posx}}px;" class="hexagon" ng-class="[case.selected, case.state]">
+			<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state]">
 			</div>
 		</div>
 		<div class="clearfix"></div>
