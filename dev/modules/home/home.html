@@ -1,0 +1,27 @@
+<div id="home">
+	<form name="configForm" novalidate>
+		<fieldset>
+			<legend>Level</legend>
+			<div class="btn-group">
+		        <label class="btn btn-primary" ng-model="level" btn-radio="'Easy'">Easy</label>
+		        <label class="btn btn-primary" ng-model="level" btn-radio="'Medium'">Medium</label>
+		        <label class="btn btn-primary" ng-model="level" btn-radio="'Hard'">Hard</label>
+		    </div>
+		</fieldset>
+		<fieldset>
+			<legend>Game board size</legend>
+			<div class="btn-group">
+		        <label class="btn btn-primary" ng-model="size" btn-radio="'9'">9x9</label>
+		        <label class="btn btn-primary" ng-model="size" btn-radio="'11'">11x11</label>
+		        <label class="btn btn-primary" ng-model="size" btn-radio="'14'">14x14</label>
+		        <label class="btn btn-primary" ng-model="size" btn-radio="'19'">19x19</label>
+		    </div>
+		</fieldset>
+	    
+	    <button 
+	    	ng-disabled="level === '' || size === ''"
+	    	ng-click='runGame()' 
+	    	type="submit" 
+	    	class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-ok"></i></button>
+	</form>
+</div>

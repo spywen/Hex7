@@ -1,0 +1,17 @@
+<div id="gameBoard" ng-init="initBoard()">
+	<pre>
+	{{level|json}}
+	{{size|json}}
+	{{turn ? 'player1' : 'player2'}}
+	{{selectedCase}}
+	{{winner}}
+	</pre>
+
+	<div class="boardBorder">
+		<div class="relative">
+			<div ng-repeat="case in boardCases" style="position:absolute;top:{{case.posy}}px;left:{{case.posx}}px;" class="hexagon" ng-class="[case.selected, case.state]">
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+</div>
