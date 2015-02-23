@@ -2,8 +2,8 @@ angular.module('hex7.game.rulesService', [])
 .constant('gameConstants',{
 	'state':{
 		'default':'default',
-		'player1':'player1',
-		'player2':'player2'
+		'player1':'blue',
+		'player2':'red'
 	},
 	'case':{
 		x: 0,//x
@@ -14,9 +14,9 @@ angular.module('hex7.game.rulesService', [])
 		selected:false,
 		alreadyTested:false
 	},
-	"xposFactor":53,
-	"yposFactor":46,
-	"posLineDecalFactor":26
+	"xposFactor":33,
+	"yposFactor":28,
+	"posLineDecalFactor":17
 })
 .factory('rulesService', function(gameConstants){
 
@@ -46,30 +46,21 @@ angular.module('hex7.game.rulesService', [])
 	}
 
 	function checkIfSomeoneWin(board, size){
+		var winner = '';
 		_.forEach([
 			{//PLAYER 1
-				'where':{'y':0, 'state':gameConstants.state.player1},
-				'side':'y',
+				'whereStart':{'y':0, 'state':gameConstants.state.player1},
+				'whereEnd':{'y':size-1, 'state':gameConstants.state.player1},
 				'state':gameConstants.state.player1
 			},
 			{//PLAYER 2
-				'where':{'x':0, 'state':gameConstants.state.player2},
-				'side':'x',
+				'whereStart':{'x':0, 'state':gameConstants.state.player2},
+				'whereEnd':{'x':size-1, 'state':gameConstants.state.player2},
 				'state':gameConstants.state.player2
 			}
 		], function(player){
-			if(player.side === 'y'){
-				player.where.y = 0;
-			}else{
-				player.where.x = 0;
-			}
-			var playerFirstSidePieces = _.where(board, player.where);
-			if(player.side === 'y'){
-				player.where.y = size-1;
-			}else{
-				player.where.x = size-1;
-			}
-			var playerEndSidePieces = _.where(board, player.where);
+			var playerFirstSidePieces = _.where(board, player.whereStart);
+			var playerEndSidePieces = _.where(board, player.whereEnd);
 			if(playerFirstSidePieces.length > 0 && playerEndSidePieces.length > 0){
 				var otherPieces = [];
 				_.map(_.where(board, {'state':player.state}), function(piece){
@@ -112,14 +103,10 @@ angular.module('hex7.game.rulesService', [])
 						if(path.length === 0){
 							endOfSearch = true;
 						}else{
-							if(player.side === 'y'){
-								player.where.y = size-1;
-							}else{
-								player.where.x = size-1;
-							}
-							if(_.where(path, player.where).length>0){
+							if(_.where(path, player.whereEnd).length>0){
 								solutionFound = true;
 								endOfSearch = true;
+								winner = player.state;
 							}else{
 								if(!newPathFound){
 									path = _.slice(path,0,path.length-1);
@@ -132,19 +119,16 @@ angular.module('hex7.game.rulesService', [])
 						}
 					}
 				});
+
 				cleanBoard(board);
-				if(solutionFound){
-					console.log('Player 1 win !');
-					return true;
-				}else{
-					return false;
-				}
 			}
 		});
-	}
-
-	function checkIfSomeoneCouldWin(){
-
+		if(winner !== ''){
+			console.log("Player win: " + winner);
+			return winner;
+		}else{
+			return false;
+		}
 	}
 
 	function cleanBoard(board){

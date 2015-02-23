@@ -4,13 +4,14 @@ angular.module('hex7.gameBoard',[
 	"hex7.game.rulesService"
 ])
 .config(function ($routeProvider,$locationProvider){
-    $routeProvider.when("/gameboard/:level/:size",{
+    $routeProvider.when("/gameboard/:vs/:level/:size",{
         controller: 'gameBoardCtrl',
         templateUrl: "gameBoard.html"
     });
 })
-.controller('gameBoardCtrl', function($scope, $routeParams, $sce, hotkeys, rulesService){
+.controller('gameBoardCtrl', function($scope, $routeParams, $sce, hotkeys, rulesService, $window){
 	//Global variables
+	$scope.vs = $routeParams.vs;
 	$scope.level = $routeParams.level;
 	$scope.size = $routeParams.size;
 
@@ -51,6 +52,10 @@ angular.module('hex7.gameBoard',[
 		}
 	};
 
+	$scope.reloadPage = function(){
+		$window.location.reload();
+	};
+
 	//HotKeys ------------------------------------------------------------------------
 	hotkeys.add({
 		combo: 'z',
@@ -86,14 +91,17 @@ angular.module('hex7.gameBoard',[
 
 	hotkeys.add({
 		combo: 'space',
-		description: 'take',
+		description: 'take box',
 		callback: function(event) {
 			if(_.first(_.where($scope.board, {'x':$scope.selectedBox.x, 'y':$scope.selectedBox.y})).state === rulesService.gameConstants.state.default){
 				_.first(_.where($scope.board, {'x':$scope.selectedBox.x, 'y':$scope.selectedBox.y})).state = 
 				$scope.turn ? rulesService.gameConstants.state.player1 : rulesService.gameConstants.state.player2;
-				
+
 				$scope.turn = !$scope.turn;
-				rulesService.checkIfSomeoneWin($scope.board, $scope.size);
+				var check = rulesService.checkIfSomeoneWin($scope.board, $scope.size);
+				if(check){
+					$scope.winner = check;
+				}
 				event.preventDefault();
 			}
 		}

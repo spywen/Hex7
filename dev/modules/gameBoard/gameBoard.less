@@ -2,15 +2,21 @@
 
 	/*Variables*/
 	@hexagon-color-default:#56c98b;
-	@hexagon-color-player1:blue;
-	@hexagon-color-player2:red;
+	@hexagon-color-blue:blue;
+	@hexagon-color-red:red;
 	@hexagon-color-selected:gray;
-	
 
+	.blue{
+		color:@hexagon-color-blue;
+	}
+	.red{
+		color:@hexagon-color-red;
+	}
+	
 	.hexagon {
 		position: relative;
-		width: 50px; 
-		height: 28.87px;
+		width: 30px; 
+		height: 17.32px;
 		background-color: @hexagon-color-default;
 		float: left;
 		margin: 1px;
@@ -18,34 +24,34 @@
 			content: "";
 			position: absolute;
 			width: 0;
-			border-left: 25px solid transparent;
-			border-right: 25px solid transparent;
+			border-left: 15px solid transparent;
+			border-right: 15px solid transparent;
 		}
 		&:before{
 			bottom: 100%;
-	  		border-bottom: 14.43px solid @hexagon-color-default;
+	  		border-bottom: 8.66px solid @hexagon-color-default;
 		}
 		&:after{
 			top: 100%;
 			width: 0;
-			border-top: 14.43px solid @hexagon-color-default;
+			border-top: 8.66px solid @hexagon-color-default;
 		}
-		&.player1{
-			background-color: @hexagon-color-player1;
+		&.blue{
+			background-color: @hexagon-color-blue;
 			&:before{
-		  		border-bottom-color: @hexagon-color-player1;
+		  		border-bottom-color: @hexagon-color-blue;
 			}
 			&:after{
-				border-top-color: @hexagon-color-player1;
+				border-top-color: @hexagon-color-blue;
 			}
 		}
-		&.player2{
-			background-color: @hexagon-color-player2;
+		&.red{
+			background-color: @hexagon-color-red;
 			&:before{
-		  		border-bottom-color: @hexagon-color-player2;
+		  		border-bottom-color: @hexagon-color-red;
 			}
 			&:after{
-				border-top-color: @hexagon-color-player2;
+				border-top-color: @hexagon-color-red;
 			}
 		}
 		&.selected{
@@ -60,14 +66,17 @@
 	}
 
 	.boardBorder{
-	height:600px;
-		border-top:solid 5px blue;
-		border-botom:solid 5px blue;
-		border-left:solid 5px red;
-		border-right:solid 5px red;
 		.relative{
 			position:relative;
 		}
-		
+		.infos{
+			padding:5px 10px;
+			margin:20px 0;
+		}
+		.turn{
+			margin-top: 10px;
+			font-weight: bold;
+			font-size: 24px;
+		}
 	}
 }

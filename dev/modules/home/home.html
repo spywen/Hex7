@@ -1,6 +1,13 @@
 <div id="home">
 	<form name="configForm" novalidate>
 		<fieldset>
+			<legend>VS</legend>
+			<div class="btn-group">
+				<label class="btn btn-primary" ng-model="vs" btn-radio="'player'">VS player</label>
+		        <label class="btn btn-primary" ng-model="vs" btn-radio="'ai'">VS AI</label>
+			</div>
+		</fieldset>
+		<fieldset ng-show="vs === 'ai'">
 			<legend>Level</legend>
 			<div class="btn-group">
 		        <label class="btn btn-primary" ng-model="level" btn-radio="'Easy'">Easy</label>
@@ -19,7 +26,7 @@
 		</fieldset>
 	    
 	    <button 
-	    	ng-disabled="level === '' || size === ''"
+	    	ng-disabled="!readyForStart()"
 	    	ng-click='runGame()' 
 	    	type="submit" 
 	    	class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-ok"></i></button>

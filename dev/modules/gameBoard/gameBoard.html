@@ -1,17 +1,33 @@
 <div id="gameBoard" ng-init="initBoard()">
-	<pre>
-	{{level|json}}
-	{{size|json}}
-	{{turn ? 'player1' : 'player2'}}
-	{{selectedCase}}
-	{{winner}}
-	</pre>
-
+	<div class="alert alert-info winnerAlert" role="alert" ng-show="winner !== ''">
+		<div class="hexagon" ng-class="winner"></div> &nbsp;Player <strong ng-class="winner">{{winner}}</strong> win the game !
+		<button class="btn btn-default btn-sm" ng-click="reloadPage()">
+		<i class="glyphicon glyphicon-refresh"></i>
+		Restart the game
+		</button>
+	</div>
 	<div class="boardBorder">
-		<div class="relative">
-			<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state]">
+		<div class="row infos bg-info">
+			<div class="col-xs-6">
+				<div class="blue">
+					BLUE DIRECTION
+					<span class="glyphicon glyphicon-arrow-down"></span>
+				</div>
+				<div class="red">
+					RED DIRECTION
+					<span class="glyphicon glyphicon-arrow-right"></span>
+				</div>
+			</div>
+			<div class="col-xs-6 turn">
+				<div class="hexagon" ng-class="turn === true ? 'blue' : 'red'"></div> &nbsp;Player {{turn === true ? 'blue' : 'red'}} turn 
 			</div>
 		</div>
-		<div class="clearfix"></div>
+		<div class="row">
+			<div class="relative">
+				<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state]">
+				</div>
+			</div>
+		</div>
+		
 	</div>
 </div>
