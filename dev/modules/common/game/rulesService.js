@@ -12,7 +12,8 @@ angular.module('hex7.game.rulesService', [])
 		posy:0,//css y position
 		state:"default",//state : default, player1, player2
 		selected:false,
-		alreadyTested:false
+		alreadyTested:false,
+		playerSide:''
 	},
 	"xposFactor":33,
 	"yposFactor":28,
@@ -38,6 +39,13 @@ angular.module('hex7.game.rulesService', [])
 				newCase.posy = y * gameConstants.yposFactor;
 				if(newCase.x===0 && newCase.y===0){//Just for the first case
 					newCase.selected = true;
+				}
+				//Player side
+				if((newCase.x===0 || newCase.x===size-1) && (newCase.y!==0 && newCase.y!==size-1)){
+					newCase.playerSide = 'redSide';
+				}
+				if((newCase.y===0 || newCase.y===size-1) && (newCase.x!==0 && newCase.x!==size-1)){
+					newCase.playerSide = 'blueSide';
 				}
 				board.push(newCase);
 			}

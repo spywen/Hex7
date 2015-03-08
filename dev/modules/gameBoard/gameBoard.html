@@ -7,24 +7,12 @@
 		</button>
 	</div>
 	<div class="boardBorder">
-		<div class="row infos bg-info">
-			<div class="col-xs-6">
-				<div class="blue">
-					BLUE DIRECTION
-					<span class="glyphicon glyphicon-arrow-down"></span>
-				</div>
-				<div class="red">
-					RED DIRECTION
-					<span class="glyphicon glyphicon-arrow-right"></span>
-				</div>
-			</div>
-			<div class="col-xs-6 turn">
-				<div class="hexagon" ng-class="turn === true ? 'blue' : 'red'"></div> &nbsp;Player {{turn === true ? 'blue' : 'red'}} turn 
-			</div>
+		<div class="row infos bg-info turn">
+			<div class="hexagon" ng-class="turn === true ? 'blue' : 'red'"></div> &nbsp;Player {{turn === true ? 'blue' : 'red'}} turn 
 		</div>
 		<div class="row">
 			<div class="relative">
-				<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state]">
+				<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state, box.playerSide]">
 				</div>
 			</div>
 		</div>

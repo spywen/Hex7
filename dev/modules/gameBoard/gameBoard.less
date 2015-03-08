@@ -27,6 +27,24 @@
 			border-left: 15px solid transparent;
 			border-right: 15px solid transparent;
 		}
+		&.redSide{
+			background-color: fade(@hexagon-color-red, 20%);
+			&:before{
+		  		border-bottom-color: fade(@hexagon-color-red, 20%);
+			}
+			&:after{
+				border-top-color: fade(@hexagon-color-red, 20%);
+			}
+		}
+		&.blueSide{
+			background-color: fade(@hexagon-color-blue, 20%);
+			&:before{
+		  		border-bottom-color: fade(@hexagon-color-blue, 20%);
+			}
+			&:after{
+				border-top-color: fade(@hexagon-color-blue, 20%);
+			}
+		}
 		&:before{
 			bottom: 100%;
 	  		border-bottom: 8.66px solid @hexagon-color-default;
@@ -53,7 +71,7 @@
 			&:after{
 				border-top-color: @hexagon-color-red;
 			}
-		}
+		} 
 		&.selected{
 			background-color: @hexagon-color-selected;
 			&:before{
@@ -72,6 +90,10 @@
 		.infos{
 			padding:5px 10px;
 			margin:20px 0;
+			height:50px;
+			.hexagon{
+				margin-top:10px;
+			}
 		}
 		.turn{
 			margin-top: 10px;
