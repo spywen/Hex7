@@ -26,19 +26,28 @@ angular.module('hex7.home',[
 		}
 	});
 
-	/*$scope.readyForStart = function(){
+	$scope.readyForStart = function(){
 		if($scope.size !== ''){
 			if($scope.vs === 'playerplayer'){
 				return true;
 			}else if($scope.vs === 'playerai'){
-
+				if($scope.levelai1 !== ''){
+					return true;
+				}else{
+					return false;
+				}
 			}else if($scope.vs === 'aiai'){
-
+				if($scope.levelai1 !== ''){
+					if($scope.levelai2 !== ''){
+						return true;
+					}else{
+						return false;
+					}
+				}else{
+					return false;
+				}
 			}
 		}
-		if( && ($scope.vs === 'playerplayer' || ($scope.vs === 'ai' && $scope.level !== ''))){
-			return true;
-		}
 		return false;
-	};*/
+	};
 });

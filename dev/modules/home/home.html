@@ -27,6 +27,8 @@
 		<fieldset>
 			<legend>Game board size</legend>
 			<div class="btn-group">
+				<label class="btn btn-primary" ng-model="size" btn-radio="'4'">4x4</label>
+				<label class="btn btn-primary" ng-model="size" btn-radio="'6'">6x6</label>
 		        <label class="btn btn-primary" ng-model="size" btn-radio="'9'">9x9</label>
 		        <label class="btn btn-primary" ng-model="size" btn-radio="'11'">11x11</label>
 		        <label class="btn btn-primary" ng-model="size" btn-radio="'14'">14x14</label>
@@ -36,6 +38,7 @@
 	    
 	    <button 
 	    	ng-click='runGame()' 
+	    	ng-disabled='!readyForStart()'
 	    	type="submit" 
 	    	class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-ok"></i></button>
 	</form>

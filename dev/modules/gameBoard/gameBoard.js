@@ -2,7 +2,8 @@ angular.module('hex7.gameBoard',[
 	"ngRoute",
 	"cfp.hotkeys",
 	"hex7.game.rulesService",
-	"hex7.game.AIService"
+	"hex7.game.AIService",
+	"hex7.constants"
 ])
 .config(function ($routeProvider,$locationProvider){
     $routeProvider.when("/gameboard/:vs/:levelai1/:levelai2/:size",{
@@ -10,7 +11,7 @@ angular.module('hex7.gameBoard',[
         templateUrl: "gameBoard.html"
     });
 })
-.controller('gameBoardCtrl', function($scope, $routeParams, $sce, hotkeys, rulesService, $window, AIService){
+.controller('gameBoardCtrl', function($scope, $q, $routeParams, $sce, hotkeys, rulesService, $window, AIService, gameConstants){
 	//Global variables
 	$scope.vs = $routeParams.vs;
 	$scope.levelai1 = $routeParams.levelai1;
@@ -104,9 +105,9 @@ angular.module('hex7.gameBoard',[
 		combo: 'space',
 		description: 'take box',
 		callback: function(event) {
-			if(_.first(_.where($scope.board, {'x':$scope.selectedBox.x, 'y':$scope.selectedBox.y})).state === rulesService.gameConstants.state.default){
+			if(_.first(_.where($scope.board, {'x':$scope.selectedBox.x, 'y':$scope.selectedBox.y})).state === gameConstants.state.default){
 				_.first(_.where($scope.board, {'x':$scope.selectedBox.x, 'y':$scope.selectedBox.y})).state = 
-				$scope.turn ? rulesService.gameConstants.state.player1 : rulesService.gameConstants.state.player2;
+				$scope.turn ? gameConstants.state.player1 : gameConstants.state.player2;
 
 				$scope.turn = !$scope.turn;
 
@@ -116,12 +117,16 @@ angular.module('hex7.gameBoard',[
 				},function(){
 					//CHECK IF IT'S THE AI TURN
 					if($scope.vs == 'playerai' && !$scope.turn && $scope.winner === ''){
-						AIService.findBestAiPlay($scope.board, $scope.size, $scope.levelai1).then(function(aiBestPiecePosition){
-							_.first(_.where($scope.board, {'x':aiBestPiecePosition.x, 'y':aiBestPiecePosition.y})).state = rulesService.gameConstants.state.player2;
+						AIService.findBestAiPlay($scope.board, $scope.size, $scope.levelai1, gameConstants.state.player2).then(function(aiBestPiecePosition){
+							_.first(_.where($scope.board, {'x':aiBestPiecePosition.x, 'y':aiBestPiecePosition.y})).state = gameConstants.state.player2;
 							rulesService.checkIfSomeoneWin($scope.board, $scope.size).then(function(winner){
 								$scope.winner = winner;
 							});
 							$scope.turn = !$scope.turn;
+						});
+					}else if($scope.vs === 'aiai'){
+						aiVsAi($scope.board, $scope.size, $scope.levelai1, gameConstants.state.player2).then(function(winner){
+							$scope.winner = winner;
 						});
 					}
 				}).finally(function(){
@@ -134,4 +139,24 @@ angular.module('hex7.gameBoard',[
 			}
 		}
 	});
+
+	function aiVsAi(board, size, aiLevel, playerState){
+		var deffered = $q.defer();
+
+		AIService.findBestAiPlay(board, size, aiLevel, playerState).then(function(aiBestPiecePosition){
+			_.first(_.where($scope.board, {'x':aiBestPiecePosition.x, 'y':aiBestPiecePosition.y})).state = playerState;
+			rulesService.checkIfSomeoneWin($scope.board, $scope.size).then(function(winner){
+				deffered.resolve(winner);
+			}, function(){
+				//$scope.turn = !$scope.turn;
+				if(playerState === gameConstants.state.player2){
+					deffered.resolve(aiVsAi($scope.board, $scope.size, $scope.levelai2, gameConstants.state.player1));
+				}else{
+					deffered.resolve(aiVsAi($scope.board, $scope.size, $scope.levelai1, gameConstants.state.player2));
+				}
+			});
+		});
+
+		return deffered.promise;
+	}
 });

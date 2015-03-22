@@ -70,7 +70,7 @@ gulp.task('generate-partial', function() {
 //Script
 //Quality task will run before script task.
 //If a quality error occured the script task will not be executed
-gulp.task('script', ['quality', 'generate-partial'], function () {
+gulp.task('script', ['quality','generate-partial'], function () {
     return gulp.src(scriptsLocation)
         .pipe(plumber())
         .pipe(concat('all.js'))
