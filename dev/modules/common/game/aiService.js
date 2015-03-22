@@ -50,37 +50,37 @@ angular.module('hex7.game.AIService', [
 
 				if(_.where(boardToAnalyse, {'x':playerPiece.x+1, 'y':playerPiece.y, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
 				if(_.where(boardToAnalyse, {'x':playerPiece.x-1, 'y':playerPiece.y, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
 				if(_.where(boardToAnalyse, {'x':playerPiece.x, 'y':playerPiece.y+1, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y+1})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y+1})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y+1})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
 				if(_.where(boardToAnalyse, {'x':playerPiece.x, 'y':playerPiece.y-1, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y-1})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y-1})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x, 'y':playerPiece.y-1})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
 				if(_.where(boardToAnalyse, {'x':playerPiece.x+1, 'y':playerPiece.y-1, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y-1})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y-1})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x+1, 'y':playerPiece.y-1})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
 				if(_.where(boardToAnalyse, {'x':playerPiece.x-1, 'y':playerPiece.y+1, 'state':gameConstants.state.default}).length>0){
 					newVirtualBoard = angular.copy(boardToAnalyse);
-					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y+1})).state = gameConstants.state.player1;
+					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y+1})).state = opponent;
 					_.first(_.where(newVirtualBoard, {'x':playerPiece.x-1, 'y':playerPiece.y+1})).aiVirtualPiece = true;
 					virtualBoards.push(newVirtualBoard);
 				}
