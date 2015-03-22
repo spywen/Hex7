@@ -3,16 +3,25 @@
 		<fieldset>
 			<legend>VS</legend>
 			<div class="btn-group">
-				<label class="btn btn-primary" ng-model="vs" btn-radio="'player'">VS player</label>
-		        <label class="btn btn-primary" ng-model="vs" btn-radio="'ai'">VS AI</label>
+				<label class="btn btn-primary" ng-model="vs" btn-radio="'playerplayer'">player VS player</label>
+		        <label class="btn btn-primary" ng-model="vs" btn-radio="'playerai'">player VS AI</label>
+		        <label class="btn btn-primary" ng-model="vs" btn-radio="'aiai'">AI VS AI</label>
 			</div>
 		</fieldset>
-		<fieldset ng-show="vs === 'ai'">
-			<legend>Level</legend>
+		<fieldset ng-show="vs === 'playerai' || vs === 'aiai'">
+			<legend>Level AI 1</legend>
 			<div class="btn-group">
-		        <label class="btn btn-primary" ng-model="level" btn-radio="'Easy'">Easy</label>
-		        <label class="btn btn-primary" ng-model="level" btn-radio="'Medium'">Medium</label>
-		        <label class="btn btn-primary" ng-model="level" btn-radio="'Hard'">Hard</label>
+		        <label class="btn btn-primary" ng-model="levelai1" btn-radio="'Easy'">Easy</label>
+		        <label class="btn btn-primary" ng-model="levelai1" btn-radio="'Medium'">Medium</label>
+		        <label class="btn btn-primary" ng-model="levelai1" btn-radio="'Hard'">Hard</label>
+		    </div>
+		</fieldset>
+		<fieldset ng-show="vs === 'aiai'">
+			<legend>Level AI 2</legend>
+			<div class="btn-group">
+		        <label class="btn btn-primary" ng-model="levelai2" btn-radio="'Easy'">Easy</label>
+		        <label class="btn btn-primary" ng-model="levelai2" btn-radio="'Medium'">Medium</label>
+		        <label class="btn btn-primary" ng-model="levelai2" btn-radio="'Hard'">Hard</label>
 		    </div>
 		</fieldset>
 		<fieldset>
@@ -26,7 +35,6 @@
 		</fieldset>
 	    
 	    <button 
-	    	ng-disabled="!readyForStart()"
 	    	ng-click='runGame()' 
 	    	type="submit" 
 	    	class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-ok"></i></button>

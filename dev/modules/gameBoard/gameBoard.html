@@ -10,9 +10,10 @@
 		<div class="row infos bg-info turn">
 			<div class="hexagon" ng-class="turn === true ? 'blue' : 'red'"></div> &nbsp;Player {{turn === true ? 'blue' : 'red'}} turn 
 		</div>
+		<div>Timing : {{timing}} milliseconds</div>
 		<div class="row">
 			<div class="relative">
-				<div ng-repeat="box in board" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state, box.playerSide]">
+				<div ng-repeat="box in board" x="{{box.x}}" y="{{box.y}}" style="position:absolute;top:{{box.posy}}px;left:{{box.posx}}px;" class="hexagon" ng-class="[box.selected ? 'selected' : 'notSelected', box.state, box.playerSide]">
 				</div>
 			</div>
 		</div>

@@ -9,22 +9,36 @@ angular.module('hex7.home',[
 })
 .controller('homeCtrl', function($scope, $location){
 	$scope.vs = '';
-	$scope.level = '';
+	$scope.levelai1 = '';
+	$scope.levelai2 = '';
 	$scope.size = '';
 
 	$scope.runGame = function(){
-		$location.path('gameboard/'+$scope.vs+'/'+$scope.level+'/'+$scope.size);
+		$location.path('gameboard/'+$scope.vs+'/'+$scope.levelai1+'/'+$scope.levelai2+'/'+$scope.size);
 	};
 
 	$scope.$watch('vs', function(newValue, oldValue) {
-		if(newValue === 'player')
-			$scope.level = '-';
+		if(newValue === 'playerplayer'){
+			$scope.levelai1 = '-';
+			$scope.levelai2 = '-';
+		}else if(newValue === 'playerai'){
+			$scope.levelai2 = '-';
+		}
 	});
 
-	$scope.readyForStart = function(){
-		if($scope.size !== '' && ($scope.vs === 'player' || ($scope.vs === 'ai' && $scope.level !== ''))){
+	/*$scope.readyForStart = function(){
+		if($scope.size !== ''){
+			if($scope.vs === 'playerplayer'){
+				return true;
+			}else if($scope.vs === 'playerai'){
+
+			}else if($scope.vs === 'aiai'){
+
+			}
+		}
+		if( && ($scope.vs === 'playerplayer' || ($scope.vs === 'ai' && $scope.level !== ''))){
 			return true;
 		}
 		return false;
-	};
+	};*/
 });

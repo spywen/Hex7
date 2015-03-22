@@ -1,25 +1,7 @@
-angular.module('hex7.game.rulesService', [])
-.constant('gameConstants',{
-	'state':{
-		'default':'default',
-		'player1':'blue',
-		'player2':'red'
-	},
-	'case':{
-		x: 0,//x
-		y: 0,//y
-		posx:0,//css x position
-		posy:0,//css y position
-		state:"default",//state : default, player1, player2
-		selected:false,
-		alreadyTested:false,
-		playerSide:''
-	},
-	"xposFactor":33,
-	"yposFactor":28,
-	"posLineDecalFactor":17
-})
-.factory('rulesService', function(gameConstants){
+angular.module('hex7.game.rulesService', [
+	"hex7.constants"
+])
+.factory('rulesService', function(gameConstants, $q){
 
 	return {
 		initBoard: initBoard,
@@ -54,6 +36,7 @@ angular.module('hex7.game.rulesService', [])
 	}
 
 	function checkIfSomeoneWin(board, size){
+		var deffered = $q.defer();
 		var winner = '';
 		_.forEach([
 			{//PLAYER 1
@@ -133,10 +116,11 @@ angular.module('hex7.game.rulesService', [])
 		});
 		if(winner !== ''){
 			console.log("Player win: " + winner);
-			return winner;
+			deffered.resolve(winner);
 		}else{
-			return false;
+			deffered.reject(false);
 		}
+		return deffered.promise;
 	}
 
 	function cleanBoard(board){

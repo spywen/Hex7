@@ -1,18 +1,20 @@
 angular.module('hex7.gameBoard',[
 	"ngRoute",
 	"cfp.hotkeys",
-	"hex7.game.rulesService"
+	"hex7.game.rulesService",
+	"hex7.game.AIService"
 ])
 .config(function ($routeProvider,$locationProvider){
-    $routeProvider.when("/gameboard/:vs/:level/:size",{
+    $routeProvider.when("/gameboard/:vs/:levelai1/:levelai2/:size",{
         controller: 'gameBoardCtrl',
         templateUrl: "gameBoard.html"
     });
 })
-.controller('gameBoardCtrl', function($scope, $routeParams, $sce, hotkeys, rulesService, $window){
+.controller('gameBoardCtrl', function($scope, $routeParams, $sce, hotkeys, rulesService, $window, AIService){
 	//Global variables
 	$scope.vs = $routeParams.vs;
-	$scope.level = $routeParams.level;
+	$scope.levelai1 = $routeParams.levelai1;
+	$scope.levelai2 = $routeParams.levelai2;
 	$scope.size = $routeParams.size;
 
 	//Game variables
@@ -20,6 +22,8 @@ angular.module('hex7.gameBoard',[
 	$scope.selectedBox = {x:0,y:0};
 	$scope.turn = true;//true <=> player1, false <=> player2
 	$scope.winner = '';
+
+	$scope.timing = 0;
 
 
 	//Initialisation of the game board
@@ -29,6 +33,13 @@ angular.module('hex7.gameBoard',[
 
 	//Refresh case selected (old case selected is no more selected and new case selected is selected)
 	$scope.changeOfSelectedBox = function(x,y){
+
+		if($scope.vs === 'aiai'){
+			return true;
+		}else if($scope.vs == 'playerai' && !$scope.turn){
+			return true;
+		}
+
 		//Check the possibility to change of case
 		var couldChangeOfBox = false;
 		if(x !== 0){
@@ -98,10 +109,27 @@ angular.module('hex7.gameBoard',[
 				$scope.turn ? rulesService.gameConstants.state.player1 : rulesService.gameConstants.state.player2;
 
 				$scope.turn = !$scope.turn;
-				var check = rulesService.checkIfSomeoneWin($scope.board, $scope.size);
-				if(check){
-					$scope.winner = check;
-				}
+
+				var beforenow = new Date().getTime();
+				var check = rulesService.checkIfSomeoneWin($scope.board, $scope.size).then(function(winner){
+					$scope.winner = winner;
+				},function(){
+					//CHECK IF IT'S THE AI TURN
+					if($scope.vs == 'playerai' && !$scope.turn && $scope.winner === ''){
+						AIService.findBestAiPlay($scope.board, $scope.size, $scope.levelai1).then(function(aiBestPiecePosition){
+							_.first(_.where($scope.board, {'x':aiBestPiecePosition.x, 'y':aiBestPiecePosition.y})).state = rulesService.gameConstants.state.player2;
+							rulesService.checkIfSomeoneWin($scope.board, $scope.size).then(function(winner){
+								$scope.winner = winner;
+							});
+							$scope.turn = !$scope.turn;
+						});
+					}
+				}).finally(function(){
+					var afternow = new Date().getTime();
+					$scope.timing = afternow - beforenow;
+				});
+
+
 				event.preventDefault();
 			}
 		}
